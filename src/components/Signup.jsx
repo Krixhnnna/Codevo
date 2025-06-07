@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Particles from './Particles';
 import './Auth.css';
 
@@ -23,6 +24,33 @@ const Signup = () => {
     password: false,
     confirmPassword: false
   });
+
+  // Mouse movement effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    const x = (clientX / innerWidth - 0.5) * 2;
+    const y = (clientY / innerHeight - 0.5) * 2;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const springConfig = { damping: 20, stiffness: 100 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+
+  const rotateX = useTransform(springY, [-1, 1], [10, -10]);
+  const rotateY = useTransform(springX, [-1, 1], [-10, 10]);
+  const translateX = useTransform(springX, [-1, 1], [-20, 20]);
+  const translateY = useTransform(springY, [-1, 1], [-20, 20]);
 
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -101,24 +129,54 @@ const Signup = () => {
   return (
     <div className="auth-container">
       <Particles
-        particleCount={500}
-        particleSpread={20}
-        speed={0.15}
-        particleColors={['#2196f3', '#64b5f6', '#1976d2', '#90caf9']}
+        particleCount={150}
+        particleSpread={12}
+        speed={0.1}
+        particleColors={['#ffffff', '#ffffff']}
         moveParticlesOnHover={true}
-        particleHoverFactor={3}
         alphaParticles={true}
         particleBaseSize={120}
-        sizeRandomness={0.8}
-        cameraDistance={15}
+        disableRotation={false}
         className="particles-background"
       />
-      <div className="auth-box">
-        <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join us and start your coding journey</p>
+      <motion.div 
+        className="auth-box"
+        style={{
+          rotateX,
+          rotateY,
+          translateX,
+          translateY,
+          transformStyle: "preserve-3d",
+          perspective: 1000
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.h1 
+          className="auth-title"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Create Account
+        </motion.h1>
+        <motion.p 
+          className="auth-subtitle"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          Join us and start your coding journey
+        </motion.p>
 
         <form onSubmit={handleSubmit}>
-          <div className="input-icon-group">
+          <motion.div 
+            className="input-icon-group"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <input
               type="text"
               name="name"
@@ -129,9 +187,14 @@ const Signup = () => {
               onBlur={handleBlur}
             />
             <FiUser className="input-icon" />
-          </div>
+          </motion.div>
 
-          <div className="input-icon-group">
+          <motion.div 
+            className="input-icon-group"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <input
               type="email"
               name="email"
@@ -142,9 +205,14 @@ const Signup = () => {
               onBlur={handleBlur}
             />
             <FiMail className="input-icon" />
-          </div>
+          </motion.div>
 
-          <div className="input-icon-group">
+          <motion.div 
+            className="input-icon-group"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             <input
               type={showPassword ? 'text' : 'password'}
               name="password"
@@ -155,16 +223,23 @@ const Signup = () => {
               onBlur={handleBlur}
             />
             <FiLock className="input-icon" />
-            <button
+            <motion.button
               type="button"
               className="input-icon-right"
               onClick={() => setShowPassword(!showPassword)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               {showPassword ? <FiEyeOff /> : <FiEye />}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          <div className="input-icon-group">
+          <motion.div 
+            className="input-icon-group"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               name="confirmPassword"
@@ -175,47 +250,76 @@ const Signup = () => {
               onBlur={handleBlur}
             />
             <FiLock className="input-icon" />
-            <button
+            <motion.button
               type="button"
               className="input-icon-right"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {error && (
-            <div className="error-message">
+            <motion.div 
+              className="error-message"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <FiAlertCircle className="error-icon" />
               {error}
-            </div>
+            </motion.div>
           )}
 
-          <button
+          <motion.button
             type="submit"
             className={`auth-button ${loading ? 'loading' : ''}`}
             disabled={loading}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
           >
             {loading ? 'Creating account...' : 'Create Account'}
-          </button>
+          </motion.button>
         </form>
 
-        <div className="divider">or continue with</div>
+        <motion.div 
+          className="divider"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          or continue with
+        </motion.div>
 
-        <button
+        <motion.button
           type="button"
           className="google-btn"
           onClick={handleGoogleSignIn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
         >
           <FcGoogle className="google-icon" />
           Sign up with Google
-        </button>
+        </motion.button>
 
-        <div className="auth-footer">
+        <motion.div 
+          className="auth-footer"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+        >
           Already have an account?{' '}
           <Link to="/login">Sign in</Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

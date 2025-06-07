@@ -4,10 +4,10 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: var(--background-light);
+  background: rgba(10, 10, 10, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-container {
@@ -24,6 +24,7 @@
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
+  position: relative;
 }
 
 .logo-icon {
@@ -36,6 +37,25 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text);
+  position: relative;
+  text-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+  transition: all 0.3s ease;
+}
+
+.logo-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.nav-logo:hover .logo-text::after {
+  transform: scaleX(1);
 }
 
 .nav-links {
@@ -49,27 +69,56 @@
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   padding: 0.5rem;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.nav-link:hover::before {
+  left: 100%;
 }
 
 .nav-link:hover {
   color: var(--text);
-  background: var(--background-lighter);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-link.active {
   color: var(--primary);
+  text-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
 }
 
 .nav-icon {
   width: 1.25rem;
   height: 1.25rem;
   stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover .nav-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(33, 150, 243, 0.5));
 }
 
 .login-btn {
@@ -81,18 +130,40 @@
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.login-btn:hover::before {
+  left: 100%;
 }
 
 .login-btn:hover {
   background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
 }
 
 .login-btn:active {
@@ -103,6 +174,11 @@
   width: 1.25rem;
   height: 1.25rem;
   stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover .login-icon {
+  transform: scale(1.1) rotate(10deg);
 }
 
 .mobile-menu-btn {
@@ -162,9 +238,11 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--background-light);
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 1rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     gap: 1rem;
   }
 
