@@ -28,11 +28,13 @@
 .hero {
   position: relative;
   z-index: 10;
-  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
+  min-height: calc(-webkit-fill-available - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
+  -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -43,6 +45,7 @@
   justify-content: center;
   max-width: 1200px;
   width: 100%;
+  padding: 2rem 0;
 }
 
 .hero-title {
@@ -96,8 +99,12 @@
   text-decoration: none;
   display: inline-block;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   text-align: center;
   min-width: 220px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .btn-wrapper:hover {
@@ -126,11 +133,23 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding: 0 1rem;
+    min-height: calc(100vh - 60px);
+  }
+  
+  .hero-content {
+    padding: 1.5rem 0;
+  }
+  
   .hero-title {
     font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
+  
   .hero-subtitle {
     font-size: 1.2rem;
+    margin-bottom: 2rem;
   }
   
   .hero-buttons {
@@ -142,17 +161,46 @@
   .btn-wrapper {
     width: 100%;
     max-width: 300px;
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: 0 0.8rem;
+    min-height: calc(100vh - 50px);
+  }
+  
+  .hero-content {
+    padding: 1rem 0;
+  }
+  
   .hero-title {
     font-size: 2rem;
+    margin-bottom: 0.8rem;
   }
+  
   .hero-subtitle {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
+  
+  .hero-buttons {
+    gap: 1rem;
+  }
+  
+  .btn-wrapper {
+    max-width: 280px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    min-width: 200px;
+  }
+}
+
+/* Android-specific fixes */
+@supports (-webkit-touch-callout: none) {
   .hero {
-    padding: 0 1rem;
+    min-height: calc(-webkit-fill-available - 80px);
   }
 } 

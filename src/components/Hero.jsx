@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import BlurText from './BlurText';
 import './Hero.css';
 
@@ -23,12 +24,12 @@ const Hero = () => {
         />
         
         <div className="hero-buttons">
-          <a href="#question-tracker" className="btn-wrapper">
-            Question Tracker
-          </a>
-          <a href="#profile-tracker" className="btn-wrapper btn-blue">
-            Profile Tracker
-          </a>
+          <Link to="/login" className="btn-wrapper">
+            Login
+          </Link>
+          <Link to="/signup" className="btn-wrapper btn-blue">
+            Get Started
+          </Link>
         </div>
       </div>
     </section>

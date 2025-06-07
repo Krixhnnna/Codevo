@@ -1,8 +1,15 @@
 import React from 'react';
 import { Trophy, ListTodo, CalendarCheck, UserCircle, LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -30,7 +37,7 @@ const Navbar = () => {
         </div>
         
         <div className="nav-actions">
-          <button className="login-btn">
+          <button className="login-btn" onClick={handleLoginClick}>
             Login <LogIn className="login-icon" />
           </button>
         </div>

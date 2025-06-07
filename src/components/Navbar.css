@@ -8,7 +8,8 @@
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 1rem 0;
+  padding: 0.8rem 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-container {
@@ -17,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 
 .nav-logo {
@@ -103,6 +104,9 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .login-btn:hover {
@@ -130,5 +134,40 @@
   
   .nav-container {
     padding: 0 1rem;
+  }
+  
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  
+  .login-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.6rem 0;
+  }
+  
+  .nav-container {
+    padding: 0 0.8rem;
+  }
+  
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .login-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Android-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .navbar {
+    padding-top: env(safe-area-inset-top);
   }
 } 
