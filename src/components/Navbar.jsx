@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiCode, FiBook, FiLogIn } from 'react-icons/fi';
+import { FiHome, FiCode, FiAward, FiLogIn } from 'react-icons/fi';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -26,9 +26,9 @@ const Navbar = () => {
             <FiCode className="nav-icon" />
             Problems
           </Link>
-          <Link to="/learn" className={`nav-link ${isActive('/learn') ? 'active' : ''}`}>
-            <FiBook className="nav-icon" />
-            Learn
+          <Link to="/leaderboard" className={`nav-link ${isActive('/leaderboard') ? 'active' : ''}`}>
+            <FiAward className="nav-icon" />
+            Leaderboard
           </Link>
         </div>
 
