@@ -24,4 +24,7 @@ yarn-error.log*
 .idea/
 .vscode/
 *.swp
-*.swo 
+*.swo
+
+# Cache
+node_modules/.cache/ 
