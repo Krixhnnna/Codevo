@@ -2,34 +2,34 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
+import Particles from './Particles';
 import './Auth.css';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [touched, setTouched] = useState({
     name: false,
     email: false,
     password: false,
-    confirmPassword: false,
+    confirmPassword: false
   });
-  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const validateForm = () => {
-    if (!formData.name.trim()) {
+    if (!formData.name) {
       setError('Name is required');
       return false;
     }
@@ -46,7 +46,11 @@ const Signup = () => {
       return false;
     }
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError('Password must be at least 6 characters');
+      return false;
+    }
+    if (!formData.confirmPassword) {
+      setError('Please confirm your password');
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -78,197 +82,139 @@ const Signup = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    setError('');
-    
     try {
-      // Mock signup (replace with real API call)
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      navigate('/login');
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate('/dashboard');
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError('Failed to create account. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    setError('');
-    
-    try {
-      // Mock Google Sign-In (replace with real Google OAuth implementation)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate('/');
-    } catch (err) {
-      setError('Failed to sign up with Google. Please try again.');
-    } finally {
-      setGoogleLoading(false);
-    }
+  const handleGoogleSignIn = () => {
+    // Implement Google Sign In
+    console.log('Google Sign In clicked');
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-box enhanced-auth-box">
-        <div className="auth-logo">Codevo</div>
+      <Particles
+        particleCount={500}
+        particleSpread={20}
+        speed={0.15}
+        particleColors={['#2196f3', '#64b5f6', '#1976d2', '#90caf9']}
+        moveParticlesOnHover={true}
+        particleHoverFactor={3}
+        alphaParticles={true}
+        particleBaseSize={120}
+        sizeRandomness={0.8}
+        cameraDistance={15}
+        className="particles-background"
+      />
+      <div className="auth-box">
         <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join our coding community today</p>
-        
-        <button 
-          onClick={handleGoogleSignIn}
-          className="google-auth-button"
-          disabled={googleLoading}
-        >
-          <FcGoogle className="google-icon" />
-          {googleLoading ? 'Signing up...' : 'Continue with Google'}
-        </button>
+        <p className="auth-subtitle">Join us and start your coding journey</p>
 
-        <div className="auth-divider">
-          <span>or</span>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiUser /></span>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Full Name"
-                required
-                className={touched.name && !formData.name ? 'input-error' : ''}
-              />
-            </div>
-            {touched.name && !formData.name && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Name is required
-              </div>
-            )}
+        <form onSubmit={handleSubmit}>
+          <div className="input-icon-group">
+            <input
+              type="text"
+              name="name"
+              className={`auth-input ${touched.name && !formData.name ? 'error' : ''}`}
+              placeholder="Full name"
+              value={formData.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiUser className="input-icon" />
           </div>
 
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiMail /></span>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Email address"
-                required
-                autoComplete="username"
-                className={touched.email && !formData.email ? 'input-error' : ''}
-              />
-            </div>
-            {touched.email && !formData.email && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Email is required
-              </div>
-            )}
+          <div className="input-icon-group">
+            <input
+              type="email"
+              name="email"
+              className={`auth-input ${touched.email && !formData.email ? 'error' : ''}`}
+              placeholder="Email address"
+              value={formData.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiMail className="input-icon" />
           </div>
 
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiLock /></span>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Password"
-                required
-                autoComplete="new-password"
-                className={touched.password && !formData.password ? 'input-error' : ''}
-              />
-              <span 
-                className="input-icon input-icon-right" 
-                onClick={() => setShowPassword(v => !v)} 
-                tabIndex={0} 
-                role="button" 
-                aria-label="Toggle password visibility"
-              >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
-              </span>
-            </div>
-            {touched.password && !formData.password && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Password is required
-              </div>
-            )}
+          <div className="input-icon-group">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              className={`auth-input ${touched.password && !formData.password ? 'error' : ''}`}
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiLock className="input-icon" />
+            <button
+              type="button"
+              className="input-icon-right"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
 
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiLock /></span>
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Confirm Password"
-                required
-                autoComplete="new-password"
-                className={touched.confirmPassword && !formData.confirmPassword ? 'input-error' : ''}
-              />
-              <span 
-                className="input-icon input-icon-right" 
-                onClick={() => setShowConfirmPassword(v => !v)} 
-                tabIndex={0} 
-                role="button" 
-                aria-label="Toggle password visibility"
-              >
-                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-              </span>
-            </div>
-            {touched.confirmPassword && !formData.confirmPassword && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Please confirm your password
-              </div>
-            )}
+          <div className="input-icon-group">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              className={`auth-input ${touched.confirmPassword && !formData.confirmPassword ? 'error' : ''}`}
+              placeholder="Confirm password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiLock className="input-icon" />
+            <button
+              type="button"
+              className="input-icon-right"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
 
           {error && (
-            <div className="auth-error">
+            <div className="error-message">
               <FiAlertCircle className="error-icon" />
               {error}
             </div>
           )}
 
-          <button 
-            type="submit" 
-            className={`auth-button ${loading ? 'loading' : ''}`} 
+          <button
+            type="submit"
+            className={`auth-button ${loading ? 'loading' : ''}`}
             disabled={loading}
           >
-            {loading ? (
-              <>
-                <span className="loading-spinner"></span>
-                Creating Account...
-              </>
-            ) : (
-              'Create Account'
-            )}
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 
-        <p className="auth-switch">
+        <div className="divider">or continue with</div>
+
+        <button
+          type="button"
+          className="google-btn"
+          onClick={handleGoogleSignIn}
+        >
+          <FcGoogle className="google-icon" />
+          Sign up with Google
+        </button>
+
+        <div className="auth-footer">
           Already have an account?{' '}
-          <Link to="/login" className="auth-link">
-            Sign In
-          </Link>
-        </p>
+          <Link to="/login">Sign in</Link>
+        </div>
       </div>
     </div>
   );

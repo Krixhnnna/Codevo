@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
+import Particles from './Particles';
 import './Auth.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [touched, setTouched] = useState({ email: false, password: false });
-  const navigate = useNavigate();
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false
+  });
 
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -31,7 +37,7 @@ const Login = () => {
       return false;
     }
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError('Password must be at least 6 characters');
       return false;
     }
     return true;
@@ -59,118 +65,77 @@ const Login = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    setError('');
-    
     try {
-      // Mock authentication (replace with real API call)
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      if (formData.email === 'user@example.com' && formData.password === 'password') {
-        navigate('/');
-      } else {
-        setError('Invalid email or password');
-      }
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate('/dashboard');
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    setError('');
-    
-    try {
-      // Mock Google Sign-In (replace with real Google OAuth implementation)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate('/');
-    } catch (err) {
-      setError('Failed to sign in with Google. Please try again.');
-    } finally {
-      setGoogleLoading(false);
-    }
+  const handleGoogleSignIn = () => {
+    // Implement Google Sign In
+    console.log('Google Sign In clicked');
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-box enhanced-auth-box">
-        <div className="auth-logo">Codevo</div>
-        <h1 className="auth-title">Welcome Back!</h1>
-        <p className="auth-subtitle">Sign in to continue your coding journey</p>
-        
-        <button 
-          onClick={handleGoogleSignIn}
-          className="google-auth-button"
-          disabled={googleLoading}
-        >
-          <FcGoogle className="google-icon" />
-          {googleLoading ? 'Signing in...' : 'Continue with Google'}
-        </button>
+      <Particles
+        particleCount={500}
+        particleSpread={20}
+        speed={0.15}
+        particleColors={['#2196f3', '#64b5f6', '#1976d2', '#90caf9']}
+        moveParticlesOnHover={true}
+        particleHoverFactor={3}
+        alphaParticles={true}
+        particleBaseSize={120}
+        sizeRandomness={0.8}
+        cameraDistance={15}
+        className="particles-background"
+      />
+      <div className="auth-box">
+        <h1 className="auth-title">Welcome Back</h1>
+        <p className="auth-subtitle">Sign in to continue to your account</p>
 
-        <div className="auth-divider">
-          <span>or</span>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiMail /></span>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Email address"
-                required
-                autoComplete="username"
-                className={touched.email && !formData.email ? 'input-error' : ''}
-              />
-            </div>
-            {touched.email && !formData.email && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Email is required
-              </div>
-            )}
+        <form onSubmit={handleSubmit}>
+          <div className="input-icon-group">
+            <input
+              type="email"
+              name="email"
+              className={`auth-input ${touched.email && !formData.email ? 'error' : ''}`}
+              placeholder="Email address"
+              value={formData.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiMail className="input-icon" />
           </div>
 
-          <div className="form-group">
-            <div className="input-icon-group">
-              <span className="input-icon"><FiLock /></span>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Password"
-                required
-                autoComplete="current-password"
-                className={touched.password && !formData.password ? 'input-error' : ''}
-              />
-              <span 
-                className="input-icon input-icon-right" 
-                onClick={() => setShowPassword(v => !v)} 
-                tabIndex={0} 
-                role="button" 
-                aria-label="Toggle password visibility"
-              >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
-              </span>
-            </div>
-            {touched.password && !formData.password && (
-              <div className="error-message">
-                <FiAlertCircle className="error-icon" />
-                Password is required
-              </div>
-            )}
+          <div className="input-icon-group">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              className={`auth-input ${touched.password && !formData.password ? 'error' : ''}`}
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <FiLock className="input-icon" />
+            <button
+              type="button"
+              className="input-icon-right"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
 
           {error && (
-            <div className="auth-error">
+            <div className="error-message">
               <FiAlertCircle className="error-icon" />
               {error}
             </div>
@@ -178,32 +143,34 @@ const Login = () => {
 
           <div className="auth-options">
             <Link to="/forgot-password" className="forgot-password">
-              Forgot Password?
+              Forgot password?
             </Link>
           </div>
 
-          <button 
-            type="submit" 
-            className={`auth-button ${loading ? 'loading' : ''}`} 
+          <button
+            type="submit"
+            className={`auth-button ${loading ? 'loading' : ''}`}
             disabled={loading}
           >
-            {loading ? (
-              <>
-                <span className="loading-spinner"></span>
-                Signing In...
-              </>
-            ) : (
-              'Sign In'
-            )}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="auth-switch">
+        <div className="divider">or continue with</div>
+
+        <button
+          type="button"
+          className="google-btn"
+          onClick={handleGoogleSignIn}
+        >
+          <FcGoogle className="google-icon" />
+          Sign in with Google
+        </button>
+
+        <div className="auth-footer">
           Don't have an account?{' '}
-          <Link to="/signup" className="auth-link">
-            Sign Up
-          </Link>
-        </p>
+          <Link to="/signup">Create an account</Link>
+        </div>
       </div>
     </div>
   );

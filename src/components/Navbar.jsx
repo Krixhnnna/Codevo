@@ -1,45 +1,42 @@
 import React from 'react';
-import { Trophy, ListTodo, CalendarCheck, UserCircle, LogIn } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { FiHome, FiCode, FiBook, FiLogIn } from 'react-icons/fi';
 import './Navbar.css';
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLoginClick = () => {
-    navigate('/login');
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <div className="nav-logo">
+        <Link to="/" className="nav-logo">
           <span className="logo-text">Codevo</span>
-        </div>
-        
+        </Link>
+
         <div className="nav-links">
-          <a href="#leaderboard" className="nav-link">
-            <Trophy className="nav-icon" />
-            Leaderboard
-          </a>
-          <a href="#question-tracker" className="nav-link">
-            <ListTodo className="nav-icon" />
-            Question Tracker
-          </a>
-          <a href="#event-tracker" className="nav-link">
-            <CalendarCheck className="nav-icon" />
-            Event Tracker
-          </a>
-          <a href="#profile-tracker" className="nav-link">
-            <UserCircle className="nav-icon" />
-            Profile Tracker
-          </a>
+          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+            <FiHome className="nav-icon" />
+            Home
+          </Link>
+          <Link to="/problems" className={`nav-link ${isActive('/problems') ? 'active' : ''}`}>
+            <FiCode className="nav-icon" />
+            Problems
+          </Link>
+          <Link to="/learn" className={`nav-link ${isActive('/learn') ? 'active' : ''}`}>
+            <FiBook className="nav-icon" />
+            Learn
+          </Link>
         </div>
-        
+
         <div className="nav-actions">
-          <button className="login-btn" onClick={handleLoginClick}>
-            Login <LogIn className="login-icon" />
-          </button>
+          <Link to="/login" className="login-btn">
+            <FiLogIn className="login-icon" />
+            Login
+          </Link>
         </div>
       </div>
     </nav>
